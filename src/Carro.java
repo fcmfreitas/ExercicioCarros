@@ -35,14 +35,18 @@ public class Carro {
         }
     }
 
-    public boolean viaja(int distancia) {
-        int distanciaPossivel = verificaSePodeViajar(distancia);
+    public void viaja(int distancia) {
+        //int distanciaPossivel = verificaSePodeViajar(distancia);
+        /*
         if (distanciaPossivel >= distancia) {
             motor.percorre(distancia);
             tanque.gasta(motor.combustivelNecessario(distancia));
             return true;
         }
         return false;
+         */
+        motor.percorre(distancia);
+        tanque.gasta(motor.combustivelNecessario(distancia));
     }
 
     @Override
