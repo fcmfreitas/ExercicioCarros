@@ -1,28 +1,33 @@
 public class Motor {
 
-    private TipoCombustivel tipoMotor;
-    private int consumo; // em quilometros por unidade. Ex: Km/Lt
+    private boolean flex;
+    private int consumoGasolina;
+    private int consumoAlcool;
+    private TipoCombustivel tipoCombustivelAtual;
     private int quilometragem;
 
-    public Motor(TipoCombustivel tipoMotor, int consumo) {
-        this.tipoMotor = tipoMotor;
-        this.consumo = consumo;
+    public Motor(int consumoGasolina, int consumoAlcool) {
+        this.consumoGasolina = consumoGasolina;
+        this.consumoAlcool = consumoAlcool;
+        this.flex = (consumoGasolina != 0 && consumoAlcool != 0);
     }
 
-    public int getConsumo() {
-        return this.consumo;
+    public void setTipoCombustivelAtual(TipoCombustivel tipoCombustivel) {
+        this.tipoCombustivelAtual = tipoCombustivel;
     }
 
-    public TipoCombustivel getTipoMotor(){
-        return this.tipoMotor;
-    }
-
-    public int getQuilometragem(){
-        return this.quilometragem;
+    public int getConsumoAtual() {
+        if (tipoCombustivelAtual == TipoCombustivel.GASOLINA) {
+            return consumoGasolina;
+        } else if (tipoCombustivelAtual == TipoCombustivel.ALCOOL) {
+            return consumoAlcool;
+        } else {
+            return 0;
+        }
     }
 
     public int combustivelNecessario(int distancia) {
-        return distancia / consumo;
+        return distancia / getConsumoAtual();
     }
 
     public void percorre(int distancia) {
@@ -31,6 +36,8 @@ public class Motor {
 
     @Override
     public String toString() {
-        return "Motor [consumo=" + consumo + ", quilometragem=" + quilometragem + ", tipoMotor=" + tipoMotor + "]";
+        return "Motor [flex=" + flex + ", consumoAtual=" + getConsumoAtual() + ", quilometragem=" + quilometragem
+                + ", tipoCombustivelAtual=" + tipoCombustivelAtual + "]";
     }
 }
+

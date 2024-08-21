@@ -1,18 +1,21 @@
 public class App {
     public static void main(String[] args) throws Exception {
-
-        Carro suv = new Carro("SUV", TipoCombustivel.FLEX, 8, 55);
+        Motor motor_flex  = new Motor(8, 6);
+        Carro suv_flex = new Carro("SUV Flex", motor_flex, 65);
 
         System.out.println("Tipos de veiculos:");
-        System.out.println(suv);
+        System.out.println(suv_flex);
 
         System.out.println("\n\n----------------");
         System.out.println("\nAbastencendo carro basico com gasolina");
-        suv.abastece(TipoCombustivel.GASOLINA, 55);
-        System.out.println(suv);
+        suv_flex.abastece(TipoCombustivel.GASOLINA, 50);
+        System.out.println(suv_flex);
+        System.out.println("\nAbastencendo carro basico com alcool");
+        suv_flex.abastece(TipoCombustivel.ALCOOL, 10);
+        System.out.println(suv_flex);
         System.out.println("\nViajando com o carro basico");
-        suv.viaja(250);
-        suv.viaja(150);
-        System.out.println(suv);
+        suv_flex.viaja(250);
+        suv_flex.viaja(150);
+        System.out.println(suv_flex);
     }
 }

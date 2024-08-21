@@ -4,10 +4,10 @@ public class Carro {
     private Motor motor;
     private TanqueCombustivel tanque;
 
-    public Carro(String modelo, TipoCombustivel tipoCombustivel, int consumoMotor, int capacidadeTanque) {
+    public Carro(String modelo, Motor motor, int capacidadeTanque) {
         this.modelo = modelo;
-        motor = new Motor(tipoCombustivel, consumoMotor);
-        tanque = new TanqueCombustivel(tipoCombustivel, capacidadeTanque);
+        this.motor = motor;
+        this.tanque = new TanqueCombustivel(capacidadeTanque);
     }
 
     public String getModelo() {
@@ -18,31 +18,26 @@ public class Carro {
         return tanque.getCombustivelDisponivel();
     }
 
-    // Retorna a quantidade efetivamente abastecida
     public int abastece(TipoCombustivel tipoCombustivel, int quantidade) {
         int capacidadeLivre = tanque.getCapacidade() - tanque.getCombustivelDisponivel();
-        if (capacidadeLivre < quantidade) {
-            tanque.abastece(tipoCombustivel, capacidadeLivre);
-            return capacidadeLivre;
-        } else {
-            tanque.abastece(tipoCombustivel, quantidade);
-            return quantidade;
-        }
+        int quantidadeAbastecida = Math.min(capacidadeLivre, quantidade);
+        tanque.abastece(tipoCombustivel, quantidadeAbastecida);
+        motor.setTipoCombustivelAtual(tipoCombustivel);
+        return quantidadeAbastecida;
     }
 
-    // Retorna a distancia que consegue viajar com o combustivel remanescente
     public int verificaSePodeViajar(int distancia) {
         int combustivelNecessario = motor.combustivelNecessario(distancia);
         if (tanque.getCombustivelDisponivel() >= combustivelNecessario) {
             return distancia;
         } else {
-            return tanque.getCombustivelDisponivel() * motor.getConsumo();
+            return tanque.getCombustivelDisponivel() * motor.getConsumoAtual();
         }
     }
 
-    // Retorna true se conseguiu viajar
     public boolean viaja(int distancia) {
-        if (verificaSePodeViajar(distancia) >= distancia) {
+        int distanciaPossivel = verificaSePodeViajar(distancia);
+        if (distanciaPossivel >= distancia) {
             motor.percorre(distancia);
             tanque.gasta(motor.combustivelNecessario(distancia));
             return true;
